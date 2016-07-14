@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class Main extends Application {
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
-    static final int ANT_COUNT = 500;
+    static final int ANT_COUNT = 100;
     static ArrayList<Ant> ants = new ArrayList<>();
     static long LastTimestamp = 0;
 
@@ -42,16 +42,11 @@ public class Main extends Application {
     static Ant moveAnt (Ant ant){
         ant.x += Math.random() * 2 - 1;
         ant.y += Math.random() * 2 - 1;
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
         return ant;
     }
 
     static void moveAnts (){
-        ants = ants.parallelStream()
+        ants = ants.stream()
                 .map(Main::moveAnt)
                 .collect(Collectors.toCollection(ArrayList<Ant>::new));
     }
