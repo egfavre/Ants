@@ -26,15 +26,31 @@ public class Main extends Application {
     static void createAnts() {
         for (int i = 0; i < ANT_COUNT; i++){
             Random r = new Random();
-            Ant a = new Ant(r.nextInt(WIDTH), r.nextInt(HEIGHT));
+            Ant a = new Ant(r.nextInt(WIDTH), r.nextInt(HEIGHT), "black");
             ants.add(a);
+        }
+    }
+
+    static void aggrevateAnt () {
+        for (Ant ant : ants){
+            for (Ant ant2 : ants){
+                double xdif = Math.abs(ant.x - ant2.x);
+                double ydif = Math.abs(ant.y - ant2.y);
+                if (xdif < 10 && xdif > 0 && ydif < 10 && ydif > 0){
+                    ant.setColor("red");
+                }
+            }
         }
     }
 
     static void drawAnts(GraphicsContext context){
         context.clearRect(0, 0, WIDTH, HEIGHT);
         for (Ant ant : ants){
-            context.setFill(Color.BLACK);
+            if (ant.antColor.equals("red")){
+                context.setFill(Color.RED);
+            }
+            else {
+                context.setFill(Color.BLACK);}
             context.fillOval(ant.x, ant.y, 5, 5);
         }
     }
@@ -80,6 +96,7 @@ public class Main extends Application {
             @Override
             public void handle(long now) {
                 moveAnts();
+                aggrevateAnt();
                 drawAnts(context);
                 fpsLabel.setText(fps(now) + "");
                 LastTimestamp = now;
